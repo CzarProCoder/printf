@@ -3,6 +3,12 @@
 #include <stdarg.h>
 #include "main.h"
 
+/**
+ * get_op - select function to check char
+ * @c: char to be checked
+ * Return: pointer to function
+ */
+
 int (*get_op(const char c))(va_list)
 {
 	int i = 0;
@@ -27,9 +33,11 @@ int (*get_op(const char c))(va_list)
 	{
 		if (c == fp[i].c[0])
 		{
-			return ()
+			return (fp[i].f);
 		}
+		i++;
 	}
+	return(NULL);
 }
 
 /**
@@ -55,5 +63,25 @@ int _printf(const char *format, ...)
 	{
 		if (format[i + 1] != '\0')
 			func = get_op(format[i + 1]);
+		if (func == NULL)
+		{
+			_putchar(format[i]);
+			sum++;
+			i++;
+		}
+		else
+		{
+			sum += func(ap);
+			i += 2;
+			continue;
+		}
 	}
+	else
+	{
+		_putchar(format[i]);
+		sum++;
+		i++;
+	}
+	va_end(ap);
+	return (sum);
 }
